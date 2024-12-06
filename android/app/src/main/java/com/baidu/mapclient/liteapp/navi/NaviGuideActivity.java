@@ -1,5 +1,8 @@
 package com.baidu.mapclient.liteapp.navi;
 
+import static com.baidu.mapclient.liteapp.Constant.CHANNEL_NAVIGATION;
+import static io.flutter.embedding.android.KeyData.CHANNEL;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -15,8 +19,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.baidu.mapclient.liteapp.MyApplication;
 import com.baidu.mapclient.liteapp.R;
 import com.baidu.navisdk.adapter.BNaviCommonParams;
 import com.baidu.navisdk.adapter.BaiduNaviManagerFactory;
@@ -28,6 +34,7 @@ import com.baidu.navisdk.adapter.struct.BNRoutePlanInfos;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.android.FlutterFragment;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -46,6 +53,8 @@ public class NaviGuideActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        MyApplication.activities.add(this);
+
         boolean fullScreen = supportFullScreen();
         Bundle params = new Bundle();
 
@@ -63,14 +72,33 @@ public class NaviGuideActivity extends FragmentActivity {
             LinearLayout rootView = findViewById(R.id.rootView);
 
             //flutter页面
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
-                    FlutterFragment.withCachedEngine("my_engine_id").build(), "flutter_fragment").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FlutterFragment.withCachedEngine("my_engine_id").build(), "flutter_fragment").commit();
 
             rootView.addView(view);
         }
 
 
         routeGuideEvent();
+
+
+        BinaryMessenger binaryMessenger = MyApplication.flutterEngine.getDartExecutor().getBinaryMessenger();
+        new MethodChannel(binaryMessenger, CHANNEL_NAVIGATION).setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+                if (call.method.equals("finish")) {
+                    finish();
+                } else if (call.method.equals("openPage")) {
+                    LinearLayout layout = findViewById(R.id.fragment_container);
+                    //设置layout高度充满
+                    ViewGroup.LayoutParams params = layout.getLayoutParams();
+                    params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layout.setLayoutParams(params);
+
+                    FlutterFragment flutterFragment = FlutterFragment.withNewEngine().initialRoute("/inputPhoneCode").build();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, flutterFragment).addToBackStack(null).commit();
+                }
+            }
+        });
     }
 
     // 导航过程事件监听
@@ -196,8 +224,25 @@ public class NaviGuideActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        mRouteGuideManager.onBackPressed(false, true);
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            //获取tag
+//            String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+
+        LinearLayout layout = findViewById(R.id.fragment_container);
+            // 如果有返回栈，执行回退操作
+            getSupportFragmentManager().popBackStack();
+            ViewGroup.LayoutParams params = layout.getLayoutParams();
+            params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
+            layout.setLayoutParams(params);
+        } else {
+            // 没有返回栈，退出Activity
+            super.onBackPressed();
+        }
+
+//        super.onBackPressed();
+
+
+//        mRouteGuideManager.onBackPressed(false, true);
     }
 
     public void onConfigurationChanged(android.content.res.Configuration newConfig) {

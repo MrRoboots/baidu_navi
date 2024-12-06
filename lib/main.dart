@@ -61,7 +61,12 @@ class FlutterPage extends StatelessWidget {
                         // MethodChannelFlutterBaiduMapNavi navi  = MethodChannelFlutterBaiduMapNavi();
                         // navi.finishNavi();
 
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
+
+                        var navi = MethodChannelFlutterBaiduMapNavi();
+                        // navi.finishNavi();
+                        navi.openPage();
+
                       },
                       child: const Text('新界面'))
                 ],

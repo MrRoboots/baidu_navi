@@ -10,20 +10,24 @@ class MethodChannelFlutterBaiduMapNavi {
   final methodChannel = const MethodChannel('flutter_baidu_map_navi');
 
   Future<void> init(BaiDuConfig config) async {
-    await methodChannel
-        .invokeMethod<String>('init', {'config': config.toJson()});
+    await methodChannel.invokeMethod<String>('init', {'config': config.toJson()});
   }
 
-  Future<dynamic> calculate(
-      NaviLatLng startLatLng, NaviLatLng endLatLng) async {
+  Future<dynamic> calculate(NaviLatLng startLatLng, NaviLatLng endLatLng) async {
     debugPrint('方法:navigation dart端参数:-> $startLatLng $endLatLng');
-    var invoke = await methodChannel.invokeMethod("calculate",
-        {'location': startLatLng.toJson(), 'endLatlng': endLatLng.toJson()});
+    var invoke = await methodChannel
+        .invokeMethod("calculate", {'location': startLatLng.toJson(), 'endLatlng': endLatLng.toJson()});
     log("invoke:::${invoke.runtimeType}");
     return invoke;
   }
 
+  MethodChannel navigationChannel = const MethodChannel('com.example.flutter/navigation');
+
   Future<void> finishNavi() async {
-    await methodChannel.invokeMethod("finishNavi");
+    await navigationChannel.invokeMethod("finish");
+  }
+
+  Future<void> openPage() async {
+    await navigationChannel.invokeMethod("openPage");
   }
 }
