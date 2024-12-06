@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:untitled/page/input_phone_code.dart';
 
 import 'model/baidu_config.dart';
 import 'model/navi_lat_lng.dart';
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: 'MyHomePage'),
         '/flutterPage': (context) => const FlutterPage(),
+        '/newPage': (context) => const NewPage(),
+        '/inputPhoneCode': (context) => const InputPhoneCode(),
       },
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -35,31 +38,59 @@ class FlutterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 125,
-      child: Scaffold(
-        // backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                color: Colors.red,
-                width: double.maxFinite,
-                height: 125,
-                child: Column(
-                  children: [
-                    Text("Welcome to Flutter Page"),
-                    // ElevatedButton(onPressed: () {
-                    //   print('点击事件');
-                    // }, child: Text('点击事件'))
-                  ],
-                ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.red,
+              width: double.infinity,
+              height: 200,
+              child: Column(
+                children: [
+                  const Text("Welcome to Flutter Page"),
+                  ElevatedButton(
+                      onPressed: () async {
+                        // print('点击事件');
+
+                        //跳转newpage
+                        // Navigator.pushNamed(context, '/inputPhoneCode');
+
+                        // MethodChannelFlutterBaiduMapNavi navi  = MethodChannelFlutterBaiduMapNavi();
+                        // navi.finishNavi();
+
+                        Navigator.pop(context);
+                      },
+                      child: const Text('新界面'))
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
+
+      // body: Stack(
+      //   children: [
+      //     Align(
+      //       alignment: Alignment.bottomCenter,
+      //       child: Container(
+      //         color: Colors.red,
+      //         width: double.maxFinite,
+      //         height: 125,
+      //         child: Column(
+      //           children: [
+      //             Text("Welcome to Flutter Page"),
+      //             // ElevatedButton(onPressed: () {
+      //             //   print('点击事件');
+      //             // }, child: Text('点击事件'))
+      //           ],
+      //         ),
+      //       ),
+      //     )
+      //   ],
+      // ),
     );
   }
 }
@@ -80,7 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
     requestLocationPermission();
   }
 
@@ -130,6 +160,22 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class NewPage extends StatefulWidget {
+  const NewPage({super.key});
+
+  @override
+  State<NewPage> createState() => _NewPageState();
+}
+
+class _NewPageState extends State<NewPage> {
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(child: Text("New Page")),
     );
   }
 }

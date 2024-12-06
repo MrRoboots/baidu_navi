@@ -121,9 +121,16 @@ public class MainActivity extends FlutterFragmentActivity implements MethodChann
                 list.add(end);
                 BaiduNaviManagerFactory.getRoutePlanManager().routePlan(list, IBNRoutePlanManager.RoutePlanPreference.ROUTE_PLAN_PREFERENCE_DEFAULT, null, handler);
             }
-        } else {
-            naviGuideActivity.onMethodCall(call, result);
-//            result.notImplemented();
+        }
+
+/*        else if (call.method.equals("finishNavi")) {
+            if (naviGuideActivity != null) {
+                naviGuideActivity.finish();
+            }
+        } */
+
+        else {
+            result.notImplemented();
         }
     }
 

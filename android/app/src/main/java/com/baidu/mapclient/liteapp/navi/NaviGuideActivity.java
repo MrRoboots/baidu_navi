@@ -1,14 +1,17 @@
 package com.baidu.mapclient.liteapp.navi;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -23,6 +26,7 @@ import com.baidu.navisdk.adapter.IBNaviViewListener;
 import com.baidu.navisdk.adapter.struct.BNGuideConfig;
 import com.baidu.navisdk.adapter.struct.BNRoutePlanInfos;
 
+import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.android.FlutterFragment;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -59,9 +63,6 @@ public class NaviGuideActivity extends FragmentActivity {
             LinearLayout rootView = findViewById(R.id.rootView);
 
             //flutter页面
-//            FlutterFragment flutterFragment = FlutterFragment.withNewEngine().initialRoute("/flutterPage").build();
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, flutterFragment).commit();
-
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
                     FlutterFragment.withCachedEngine("my_engine_id").build(), "flutter_fragment").commit();
 
@@ -260,6 +261,15 @@ public class NaviGuideActivity extends FragmentActivity {
     }
 
     public void onMethodCall(MethodCall call, MethodChannel.Result result) {
-
+//        String method = call.method;
+//        if (method.equals("jumpPhoneCode")) {
+//            LinearLayout layout = findViewById(R.id.new_view);
+//            layout.setVisibility(View.VISIBLE);
+//
+//            FlutterFragment flutterFragment = FlutterFragment.withNewEngine().initialRoute("/inputPhoneCode").build();
+//            getSupportFragmentManager().beginTransaction().replace(R.id.new_view, flutterFragment).commit();
+//        }
     }
+
+
 }

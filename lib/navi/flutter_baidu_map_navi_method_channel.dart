@@ -22,4 +22,8 @@ class MethodChannelFlutterBaiduMapNavi {
     log("invoke:::${invoke.runtimeType}");
     return invoke;
   }
+
+  Future<void> finishNavi() async {
+    await methodChannel.invokeMethod("finishNavi");
+  }
 }
