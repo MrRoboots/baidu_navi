@@ -31,6 +31,7 @@ public class MyApplication extends Application {
 
 //        FlutterEngine myEng  =  FlutterEngineCache.getInstance().get("my_engine_id");
 //        myEng.getDartExecutor().getBinaryMessenger();
+
     }
 }
 

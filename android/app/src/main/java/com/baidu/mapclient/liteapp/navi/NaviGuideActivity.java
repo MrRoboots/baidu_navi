@@ -100,6 +100,7 @@ public class NaviGuideActivity extends FragmentActivity {
                 }
             }
         });
+
     }
 
     // 导航过程事件监听
