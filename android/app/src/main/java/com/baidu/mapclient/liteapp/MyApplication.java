@@ -26,11 +26,11 @@ public class MyApplication extends Application {
         flutterEngine  = new FlutterEngine(this);
         flutterEngine.getNavigationChannel().setInitialRoute("/flutterPage");
         flutterEngine.getDartExecutor().executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault());
-
-
-
         // 缓存引擎以供后续使用
         FlutterEngineCache.getInstance().put("my_engine_id", flutterEngine);
+
+//        FlutterEngine myEng  =  FlutterEngineCache.getInstance().get("my_engine_id");
+//        myEng.getDartExecutor().getBinaryMessenger();
     }
 }
 

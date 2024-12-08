@@ -75,6 +75,7 @@ public class NaviGuideActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FlutterFragment.withCachedEngine("my_engine_id").build(), "flutter_fragment").commit();
 
             rootView.addView(view);
+
         }
 
 
